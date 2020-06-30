@@ -98,7 +98,7 @@ $(".list-group").on("click", "span", function() {
     .trim();
 
   var dateInput = $("<input>")
-    .attr("type", "date")
+    .attr("type", "text")
     .addClass("form-control")
     .val(date);
 
