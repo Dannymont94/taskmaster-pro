@@ -136,6 +136,41 @@ $(".list-group").on("blur", "input", function() {
   $(this).replaceWith(taskSpan);
 });
 
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group"),
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  update: function(event) {
+    // array to store the task data in
+    var tempArr = [];
+
+    // loop over current set of children in sortable list
+    $(this).children().each(function() {
+      var text = $(this)
+        .find("p")
+        .text()
+        .trim();
+
+      var date = $(this)
+        .find("span")
+        .text()
+        .trim();
+
+      tempArr.push({
+        text: text,
+        date: date
+      });
+    });
+    var arrName = $(this)
+      .attr("id")
+      .replace("list-", "");
+
+    tasks[arrName] = tempArr;
+    saveTasks();
+  }
+});
+
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
@@ -167,6 +202,20 @@ $("#task-form-modal .btn-primary").click(function() {
     });
 
     saveTasks();
+  }
+});
+
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  tolerance: "touch",
+  drop: function(event, ui) {
+    ui.draggable.remove();
+  },
+  over: function(event, ui) {
+    
+  },
+  out: function(event, ui) {
+    
   }
 });
 
